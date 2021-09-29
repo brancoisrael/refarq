@@ -13,7 +13,7 @@ import br.com.titcs.repository.UsuarioRepository;
 import br.com.titcs.util.MapperClass;
 
 @Service
-public class UsuarioService implements AbstractService{
+public class UsuarioService implements ServiceBase{
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -22,10 +22,20 @@ public class UsuarioService implements AbstractService{
 		return usuarioRepository.listarTodos();
 	}
 	
+	public UsuarioDTO buscarPorId(Long id){
+		var optional = usuarioRepository.findById(id) ;
+		return MapperClass.converter(optional.get(),UsuarioDTO.class);
+	}
+	
 	@Transactional
-	public UsuarioDTO inserir(UsuarioDTO usuarioDTO) {
-		Usuario usuario = MapperClass.converter(usuarioDTO, Usuario.class);
+	public UsuarioDTO salvar(UsuarioDTO usuarioDTO) {
+		var usuario = MapperClass.converter(usuarioDTO, Usuario.class);
 		validateRequest(usuario);
 		return MapperClass.converter(usuarioRepository.save(usuario),UsuarioDTO.class);
+	}	
+	
+	@Transactional
+	public void excluir(Long id) {
+		usuarioRepository.deleteById(id);
 	}
 }

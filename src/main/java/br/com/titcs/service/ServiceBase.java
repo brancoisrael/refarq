@@ -9,10 +9,10 @@ import javax.validation.ValidatorFactory;
 
 import org.springframework.util.CollectionUtils;
 
-import br.com.titcs.domain.Domain;
+import br.com.titcs.domain.DomainBase;
 import br.com.titcs.exceptions.CustomRuntimeException;
 
-public interface AbstractService {
+public interface ServiceBase {
 
 	/**
 	 * Método para efetuar validação das entradas das requisições
@@ -20,15 +20,15 @@ public interface AbstractService {
 	 * @param domain - Domain
 	 * @throws RequestValidatorException - RequestValidatorException
 	 */
-	default void validateRequest(Domain domain) {
+	default void validateRequest(DomainBase domain) {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
-		Set<ConstraintViolation<Domain>> violations = validator.validate(domain);
+		Set<ConstraintViolation<DomainBase>> violations = validator.validate(domain);
 
 		if (!CollectionUtils.isEmpty(violations)) {
 
 			StringBuilder error = new StringBuilder();
-			for (ConstraintViolation<Domain> violation : violations) {
+			for (ConstraintViolation<DomainBase> violation : violations) {
 				error.append(violation.getMessage()).append(";");
 				
 			}

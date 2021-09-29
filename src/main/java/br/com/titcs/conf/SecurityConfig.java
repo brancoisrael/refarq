@@ -48,8 +48,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     	http
     	.csrf().disable()
         .authorizeRequests()        
-        .antMatchers(HttpMethod.POST,"/usuario").hasRole("role1")
-        .antMatchers(HttpMethod.GET,"/usuario*").hasRole("role1")        
+        .antMatchers("/usuario").hasRole("role1")        
         .antMatchers(HttpMethod.GET,"/grupo*").hasRole("role2")
         .anyRequest().permitAll();
     }

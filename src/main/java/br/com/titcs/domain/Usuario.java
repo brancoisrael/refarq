@@ -10,16 +10,14 @@ import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_usuario")
-public class Usuario implements Domain{
+public class Usuario implements DomainBase{
 
 	/**
 	 * 
@@ -35,5 +33,5 @@ public class Usuario implements Domain{
 	private String nome;
 	
 	@Column(name = "idade", nullable = true)
-	private Short idade;
+	private Integer idade;
 }
