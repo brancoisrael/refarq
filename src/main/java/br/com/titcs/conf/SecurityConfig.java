@@ -44,10 +44,12 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
-        http
-        .authorizeRequests()          
-        .antMatchers(HttpMethod.GET,"/usuario*").hasRole("role1")
+    	super.configure(http);
+    	http
+    	.csrf().disable()
+        .authorizeRequests()        
+        .antMatchers(HttpMethod.POST,"/usuario").hasRole("role1")
+        .antMatchers(HttpMethod.GET,"/usuario*").hasRole("role1")        
         .antMatchers(HttpMethod.GET,"/grupo*").hasRole("role2")
         .anyRequest().permitAll();
     }
