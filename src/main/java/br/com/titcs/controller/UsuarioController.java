@@ -34,6 +34,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	
 	@ApiOperation(value="listar todos",notes="listar todos",protocols="Accept=application/json",response=UsuarioDTO.class,responseContainer = "List")	
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = UsuarioDTO.class, responseContainer = "List")})
 	@GetMapping

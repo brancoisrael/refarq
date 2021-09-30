@@ -29,7 +29,7 @@ public class Usuario implements DomainBase{
 	private Long id;	
 	
 	@Column(name = "nome", length = 200, nullable = false)
-	@NotNull(message = "Campo nome obrigatório")
+	@NotNull(message = "name.required")
 	private String nome;
 	
 	@Column(name = "idade", nullable = true)

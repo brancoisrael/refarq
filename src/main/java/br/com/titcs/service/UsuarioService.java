@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.titcs.domain.Usuario;
@@ -18,6 +19,9 @@ public class UsuarioService implements ServiceBase{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	@Autowired
+	private MessageSource messageSource;
+	
 	public List<UsuarioDTO> listarTodos(){
 		return usuarioRepository.listarTodos();
 	}
@@ -30,7 +34,8 @@ public class UsuarioService implements ServiceBase{
 	@Transactional
 	public UsuarioDTO salvar(UsuarioDTO usuarioDTO) {
 		var usuario = MapperClass.converter(usuarioDTO, Usuario.class);
-		validateRequest(usuario);
+		validateRequest(usuario,messageSource);
+		
 		return MapperClass.converter(usuarioRepository.save(usuario),UsuarioDTO.class);
 	}	
 	

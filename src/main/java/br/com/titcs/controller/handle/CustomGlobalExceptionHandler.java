@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,10 @@ import br.com.titcs.exceptions.UnauthorizedException;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
+	
+	@Autowired
+	private MessageSource messageSource;
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -63,7 +69,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		body.put("timestamp", new Date());
 		body.put("status", HttpStatus.BAD_REQUEST.value());
 		body.put("error", HttpStatus.BAD_REQUEST);
-		body.put("message", "Objeto não encontrado no banco de dados");
+		body.put("message", messageSource.getMessage("empty.result.data.access.exception",null, LocaleContextHolder.getLocale()));
 		
 		String path = ((ServletWebRequest)request).getDescription(true).replace("uri=", "").split(";")[0];
 		body.put("path", path);
@@ -78,7 +84,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		body.put("timestamp", new Date());
 		body.put("status", HttpStatus.BAD_REQUEST.value());
 		body.put("error", HttpStatus.BAD_REQUEST);
-		body.put("message", "Itens associados a este impedem a confirmação da execução.");
+		body.put("message", messageSource.getMessage("unexpected.rollback.exception",null, LocaleContextHolder.getLocale()));
 		
 		String path = ((ServletWebRequest)request).getDescription(true).replace("uri=", "").split(";")[0];
 		body.put("path", path);
@@ -93,7 +99,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		body.put("timestamp", new Date());
 		body.put("status", HttpStatus.UNAUTHORIZED.value());
 		body.put("error", HttpStatus.UNAUTHORIZED);
-		body.put("message", "Usuário não possui autorização para prosseguir com a solicitação.");
+		body.put("message", messageSource.getMessage("unauthorized.exception",null, LocaleContextHolder.getLocale()));
 		
 		String path = ((ServletWebRequest)request).getDescription(true).replace("uri=", "").split(";")[0];
 		body.put("path", path);

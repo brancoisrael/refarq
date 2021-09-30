@@ -12,6 +12,6 @@ public class UnauthorizedException extends Exception{
 	}
 	
 	public UnauthorizedException() {
-		super("Token inválido.");
+		super("invalid.token");
 	}
 }

@@ -55,6 +55,13 @@ public class TestUsuarioController extends TestBase<UsuarioDTO> {
 	
 	@Test
 	@WithMockUser(roles = "role1")
+	public void testBuscarPorId() throws Exception {
+		mockMvc.perform(get("/usuario/1").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(content().string(containsString("\"id\":1")));
+	}
+	
+	@Test
+	@WithMockUser(roles = "role1")
 	public void testInserirException() throws Exception {
 		var usuario = new UsuarioDTO();
 		usuario.setIdade(20);

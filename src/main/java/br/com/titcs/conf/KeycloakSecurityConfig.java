@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,7 +48,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     	http
     	.csrf().disable()
         .authorizeRequests()        
-        .antMatchers("/usuario").hasRole("role1")        
+        .antMatchers("/usuario*").hasRole("role1")        
         .antMatchers(HttpMethod.GET,"/grupo*").hasRole("role2")
         .anyRequest().permitAll();
     }
