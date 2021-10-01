@@ -4,8 +4,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.titcs.model.UsuarioDTO;
 import br.com.titcs.service.UsuarioService;
+import br.com.titcs.util.Constantes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,20 +37,19 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-	
+		
 	@ApiOperation(value="listar todos",notes="listar todos",protocols="Accept=application/json",response=UsuarioDTO.class,responseContainer = "List")	
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = UsuarioDTO.class, responseContainer = "List")})
 	@GetMapping
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CollectionModel<UsuarioDTO>> listarTodos(){
-		var usuarios = CollectionModel.of(usuarioService.listarTodos());
+	public ResponseEntity<PagedModel<EntityModel<UsuarioDTO>>> listarTodos(@PageableDefault(size = Constantes.PAGEABLE_DEFAULT) Pageable pageable){
+		var usuarios = usuarioService.listarTodos(pageable);
 		
 		usuarios.forEach(u->
-			u.add(linkTo(methodOn(UsuarioController.class).buscarPorId(u.getId())).withSelfRel())
-			.add(linkTo(methodOn(UsuarioController.class).excluir(u.getId())).withRel("delete"))
-			.add(linkTo(methodOn(UsuarioController.class).listarTodos()).withRel(IanaLinkRelations.COLLECTION))
+			u.getContent().add(linkTo(methodOn(UsuarioController.class).buscarPorId(u.getContent().getId())).withSelfRel())
+			.add(linkTo(methodOn(UsuarioController.class).excluir(u.getContent().getId())).withRel("delete"))
+			.add(linkTo(methodOn(UsuarioController.class).listarTodos(pageable)).withRel(IanaLinkRelations.COLLECTION))
 		);		
 		
 		return new ResponseEntity<>(usuarios, HttpStatus.OK);
@@ -60,7 +63,7 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable("id") Long id){
 		var usuario = usuarioService.buscarPorId(id);
 		usuario.add(linkTo(methodOn(UsuarioController.class).excluir(usuario .getId())).withRel("delete"));
-		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos()).withRel(IanaLinkRelations.COLLECTION));		
+		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos(Pageable.ofSize(Constantes.PAGEABLE_DEFAULT))).withRel(IanaLinkRelations.COLLECTION));		
 		
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
@@ -75,7 +78,7 @@ public class UsuarioController {
 		
 		usuario.add(linkTo(methodOn(UsuarioController.class).buscarPorId(usuario.getId())).withSelfRel());
 		usuario.add(linkTo(methodOn(UsuarioController.class).excluir(usuario .getId())).withRel("delete"));
-		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos()).withRel(IanaLinkRelations.COLLECTION));
+		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos(null)).withRel(IanaLinkRelations.COLLECTION));
 		
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
@@ -90,7 +93,7 @@ public class UsuarioController {
 		
 		usuario.add(linkTo(methodOn(UsuarioController.class).buscarPorId(usuario.getId())).withSelfRel());
 		usuario.add(linkTo(methodOn(UsuarioController.class).excluir(usuario .getId())).withRel("delete"));
-		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos()).withRel(IanaLinkRelations.COLLECTION));
+		usuario.add(linkTo(methodOn(UsuarioController.class).listarTodos(Pageable.ofSize(Constantes.PAGEABLE_DEFAULT))).withRel(IanaLinkRelations.COLLECTION));
 		
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}

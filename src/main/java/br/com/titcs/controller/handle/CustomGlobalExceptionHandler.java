@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +63,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(NoSuchElementException.class)
+	@ResponseBody
+	public ResponseEntity<Object> runtimeExceptions(NoSuchElementException ex, WebRequest request) {
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", new Date());
+		body.put("status", HttpStatus.BAD_REQUEST.value());
+		body.put("error", HttpStatus.NO_CONTENT);
+		body.put("message", messageSource.getMessage("no.such.element.exception",null, LocaleContextHolder.getLocale()));
+		
+		String path = ((ServletWebRequest)request).getDescription(true).replace("uri=", "").split(";")[0];
+		body.put("path", path);
+
+		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	@ResponseBody
 	public ResponseEntity<Object> runtimeExceptions(EmptyResultDataAccessException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", new Date());
 		body.put("status", HttpStatus.BAD_REQUEST.value());
-		body.put("error", HttpStatus.BAD_REQUEST);
+		body.put("error", HttpStatus.NO_CONTENT);
 		body.put("message", messageSource.getMessage("empty.result.data.access.exception",null, LocaleContextHolder.getLocale()));
 		
 		String path = ((ServletWebRequest)request).getDescription(true).replace("uri=", "").split(";")[0];

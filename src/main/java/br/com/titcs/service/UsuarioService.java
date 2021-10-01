@@ -1,11 +1,13 @@
 package br.com.titcs.service;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import br.com.titcs.domain.Usuario;
@@ -21,9 +23,14 @@ public class UsuarioService implements ServiceBase{
 	
 	@Autowired
 	private MessageSource messageSource;
+		
+	@Autowired
+	private PagedResourcesAssembler<UsuarioDTO> pagedResourcesAssembler;
 	
-	public List<UsuarioDTO> listarTodos(){
-		return usuarioRepository.listarTodos();
+	
+	public PagedModel<EntityModel<UsuarioDTO>> listarTodos(Pageable pageable){
+		var usuarios =usuarioRepository.listarTodos(pageable);
+		return pagedResourcesAssembler.toModel(usuarios);		
 	}
 	
 	public UsuarioDTO buscarPorId(Long id){

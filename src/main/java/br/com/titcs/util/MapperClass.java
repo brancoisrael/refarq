@@ -8,6 +8,8 @@ import java.util.Set;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.jboss.logging.Logger;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 public class MapperClass {
 
@@ -66,5 +68,12 @@ public class MapperClass {
 			}
 		});
 		return l;
+	}
+	
+	public static <D, T> Page<D> converter(final Page<T> entity, Class<D> outClass) {
+		if (entity == null)
+			return null;
+
+		return new PageImpl<D>(MapperClass.converter(entity.getContent(), outClass),entity.getPageable(),entity.getTotalElements());						
 	}
 }
