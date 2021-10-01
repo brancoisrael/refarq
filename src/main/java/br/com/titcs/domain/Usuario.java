@@ -8,10 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.LastModifiedBy;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Audited
+@AuditTable("tb_usuario_aud")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +40,9 @@ public class Usuario implements DomainBase{
 	
 	@Column(name = "idade", nullable = true)
 	private Integer idade;
+	
+	@LastModifiedBy
+	@Column(name = "timestamp", nullable = false)
+	private Long timestamp;
+	
 }
