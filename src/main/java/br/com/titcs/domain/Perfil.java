@@ -29,7 +29,7 @@ public class Perfil implements DomainBase{
 	private static final long serialVersionUID = -92472441042545709L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;	
 	
 	@Column(name = "nome", length = 50, nullable = false, unique = true)

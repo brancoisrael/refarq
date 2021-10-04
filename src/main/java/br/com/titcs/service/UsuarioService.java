@@ -40,8 +40,6 @@ public class UsuarioService implements ServiceBase{
 	}
 	
 	public UsuarioDTO buscarPorId(Long id){
-		recuperarHistorico(id);
-		
 		var optional = usuarioRepository.findById(id) ;
 		return MapperClass.converter(optional.get(),UsuarioDTO.class);
 	}

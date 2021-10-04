@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
-import org.springframework.data.annotation.LastModifiedBy;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +30,7 @@ public class Usuario implements DomainBase{
 	private static final long serialVersionUID = 7776211624808554920L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;	
 	
 	@Column(name = "nome", length = 200, nullable = false)
@@ -40,9 +39,5 @@ public class Usuario implements DomainBase{
 	
 	@Column(name = "idade", nullable = true)
 	private Integer idade;
-	
-	@LastModifiedBy
-	@Column(name = "timestamp", nullable = false)
-	private Long timestamp;
 	
 }

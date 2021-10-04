@@ -17,18 +17,19 @@ import br.com.titcs.model.UsuarioDTO;
 public class TestUsuarioController extends TestBase<UsuarioDTO> {
 
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testInserir() throws Exception {
 		var usuario = new UsuarioDTO();
+		usuario.setId(3L);
 		usuario.setNome("User 2");
 		usuario.setIdade(20);
 		
 		mockMvc.perform(post("/usuario").contentType(MediaType.APPLICATION_JSON).content(mapperObjectToJson(usuario)))
-				.andExpect(status().isOk()).andExpect(content().string(containsString("\"id\":5")));
+				.andExpect(status().isOk()).andExpect(content().string(containsString("\"id\":3")));
 	}
 	
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testAtualizar() throws Exception {
 		var usuario = new UsuarioDTO();
 		usuario.setId(1L);
@@ -40,28 +41,28 @@ public class TestUsuarioController extends TestBase<UsuarioDTO> {
 	}
 	
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testExcluir() throws Exception {
 		mockMvc.perform(delete("/usuario/2").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 	
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testListarTodos() throws Exception {
 		mockMvc.perform(get("/usuario").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().string(containsString("\"id\":1")));
 	}
 	
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testBuscarPorId() throws Exception {
 		mockMvc.perform(get("/usuario/1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().string(containsString("\"id\":1")));
 	}
 	
 	@Test
-	@WithMockUser(roles = "role1")
+	@WithMockUser(roles = "user")
 	public void testInserirException() throws Exception {
 		var usuario = new UsuarioDTO();
 		usuario.setIdade(20);

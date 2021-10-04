@@ -1,4 +1,4 @@
-create sequence seq_usuario no minvalue no maxvalue;
+create sequence seq_usuario start 1;
 create table tb_usuario(
 	id bigint default nextval('seq_usuario') primary key,	
 	nome varchar(200) not null,

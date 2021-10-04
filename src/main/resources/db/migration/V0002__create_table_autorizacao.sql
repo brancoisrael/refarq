@@ -1,6 +1,5 @@
-create sequence seq_menu no minvalue no maxvalue;
 create table tb_menu(
-	id bigint default nextval('seq_menu') primary key,	
+	id bigint primary key,	
 	nome varchar(50) unique not null,
 	descricao varchar(500) null,
 	icone varchar(100) null,
@@ -18,7 +17,7 @@ create table tb_funcionalidade(
 
 alter table tb_funcionalidade add constraint fk01_tb_funcionalidade foreign key (id_menu) references tb_menu (id) on delete no action;
 
-create sequence seq_perfil no minvalue no maxvalue;
+create sequence seq_perfil start 1;
 create table tb_perfil(
 	id bigint default nextval('seq_perfil') primary key,
 	nome varchar(50) unique not null,
